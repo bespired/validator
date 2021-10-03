@@ -2,6 +2,10 @@
 
 namespace Validator;
 
+//    "description"   => 'required|min-length:4|max-length:64',
+//    "status"        => 'boolean',
+//    "type"          => 'enum:bar:button:combination:component:design:editor:input:menu:select:text:thumb:tool:wrapper',
+
 class Validator
 {
 
@@ -23,6 +27,9 @@ class Validator
             'mandatory'  => 'This cannot be empty.',
             'min-length' => 'Not long enough.',
             'max-length' => 'Too long.',
+            'boolean'    => 'Boolean is required.',
+            'string'     => 'String is required.',
+            'enum'       => 'Does not match the enum.',
         ];
     }
 
@@ -30,16 +37,31 @@ class Validator
     {
         $rules = explode(':', $rule);
 
+        if ($value === null) {
+            if (($rules[0] === 'mandatory') || ($rules[0] === 'required')) {
+                return false;
+            }
+        }
+
         switch ($rules[0]) {
             case "required":
             case "mandatory":
-                return ($value !== null) && ($value !== '');
+                return $value !== '';
 
             case "min-length":
-                return ($value !== null) && (strlen($value) >= $rules[1]);
+                return ($value === null) || (strlen($value) >= $rules[1]);
 
             case "max-length":
-                return ($value !== null) && (strlen($value) <= $rules[1]);
+                return ($value === null) || (strlen($value) <= $rules[1]);
+
+            case "boolean":
+                return gettype($value) === 'boolean';
+
+            case "string":
+                return gettype($value) === 'string';
+
+            case "enum":
+                return in_array($value, $rules);
 
         }
 

@@ -1,0 +1,27 @@
+{
+    "name": "bespired/validator",
+    "description": "Validator - validates json input via rules",
+    "keywords": [
+        "json"
+    ],
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+    {
+        "name": "joeri",
+        "email": "joeri@bespired.nl"
+    }],
+    "require":
+    {
+        "php": ">=8.0",
+        "peekmo/jsonpath": "dev-master"
+    },
+    "autoload":
+    {
+        "psr-4":
+        {
+            "Validator\\": "src/"
+        }
+    }
+
+}
